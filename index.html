@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitDiet AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=5">
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Fit&Diet <span class="highlight">AI</span></h1>
+            <p>Your personalized, data-driven health engine.</p>
+        </header>
+
+        <main>
+            <section class="glass-panel form-panel" id="input-section">
+                <h2>Build Your Profile</h2>
+                <form id="health-form">
+                    <div class="input-flow">
+                        <div class="input-group w-50">
+                            <label for="age">Age</label>
+                            <input type="number" id="age" required min="10" max="100" placeholder="e.g. 25">
+                        </div>
+                        <div class="input-group w-50">
+                            <label for="weight">Weight (kg)</label>
+                            <input type="number" id="weight" step="0.1" required placeholder="e.g. 70">
+                        </div>
+                    </div>
+                    
+                    <div class="input-flow">
+                        <div class="input-group w-50">
+                            <label for="height">Height (cm)</label>
+                            <input type="number" id="height" step="0.1" required placeholder="e.g. 175">
+                        </div>
+                        <div class="input-group w-50">
+                            <label for="gender">Biological Sex</label>
+                            <select id="gender" required>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-flow">
+                        <div class="input-group w-50">
+                            <label for="workout_days">Workout Days (1-7)</label>
+                            <input type="number" id="workout_days" required min="1" max="7" value="4">
+                        </div>
+                        <div class="input-group w-50">
+                            <label for="weekly_goal_kg">Weekly Target (Gain/Loss weight)</label>
+                            <select id="weekly_goal_kg" required>
+                                <option value="0">0 kg (Maintenance)</option>
+                                <option value="0.25">0.25 kg / week (Mild)</option>
+                                <option value="0.5" selected>0.5 kg / week (Standard)</option>
+                                <option value="0.75">0.75 kg / week (Hard)</option>
+                                <option value="1.0">1.0 kg / week (Extreme)</option>
+                                <option value="1.5">1.5 kg / week (Only if advised)</option>
+                                <option value="2.0">2.0 kg / week (Unsafe without guidance)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="activity_level">Daily Activity Level (Lifestyle)</label>
+                        <select id="activity_level" required>
+                            <option value="sedentary">Sedentary (Desk Job, little exercise)</option>
+                            <option value="light">Lightly Active (Walking/Standing, light exercise)</option>
+                            <option value="moderate" selected>Moderately Active (Active during day, regular exercise)</option>
+                            <option value="active">Very Active (Physical job + heavy exercise)</option>
+                            <option value="extreme">Extreme (Professional athlete/Laborer)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="goal">Fitness Goal</label>
+                        <select id="goal" required>
+                            <option value="maintenance">Maintenance</option>
+                            <option value="weight_loss">Weight Loss</option>
+                            <option value="muscle_gain">Muscle Gain</option>
+                            <option value="recomp">Weight Loss & Muscle Gain</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="diet_pref">Diet Preference</label>
+                        <select id="diet_pref" required>
+                            <option value="veg">Vegetarian</option>
+                            <option value="non_veg">Non-Vegetarian</option>
+                            <option value="vegan">Vegan</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="primary-btn" id="generate-btn">
+                        <span>Generate AI Plan</span>
+                        <div class="loader" id="btn-loader"></div>
+                    </button>
+                </form>
+            </section>
+
+            <section class="glass-panel hidden result-panel" id="result-section">
+                <h2>Your AI Protocol</h2>
+                
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <h3>BMI</h3>
+                        <div class="metric-value highlight" id="bmi-display">--</div>
+                    </div>
+                    <div class="metric-box">
+                        <h3>BMR</h3>
+                        <div class="metric-value highlight" id="bmr-display">--</div>
+                    </div>
+                    <div class="metric-box">
+                        <h3>Daily Calories</h3>
+                        <div class="metric-value highlight" id="calories-display">--</div>
+                    </div>
+                    <div class="metric-box">
+                        <h3>Daily Protein</h3>
+                        <div class="metric-value highlight" id="protein-display">--</div>
+                    </div>
+                </div>
+
+                <p id="calorie-breakdown" class="breakdown-text">Loading insights...</p>
+
+                <div class="cards-container">
+                    <div class="plan-card">
+                        <div class="card-icon">🥗</div>
+                        <h3>Nutrition Plan</h3>
+                        <p id="diet-type" class="plan-title">Loading...</p>
+                        <p id="diet-strategy" class="plan-desc">...</p>
+                    </div>
+                    
+                    <div class="plan-card">
+                        <div class="card-icon">🏋️‍♂️</div>
+                        <h3>Workout Routine</h3>
+                        <p id="workout-focus" class="plan-title">Loading...</p>
+                        <p id="workout-frequency" class="plan-desc">...</p>
+                    </div>
+                </div>
+
+                <div class="tabs-control">
+                    <button class="tab-btn active" id="tab-workout">Workout Protocol</button>
+                    <button class="tab-btn" id="tab-diet">Diet Protocol</button>
+                </div>
+
+                <div class="schedule-container" id="workout-schedule">
+                    <!-- Dynamic workout schedule -->
+                </div>
+
+                <div class="schedule-container hidden" id="diet-schedule">
+                    <!-- Dynamic diet schedule -->
+                </div>
+
+                <button class="secondary-btn" id="reset-btn">Recalculate Profile</button>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js?v=5"></script>
+</body>
+</html>
