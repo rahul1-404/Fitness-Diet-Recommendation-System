@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultSection = document.getElementById('result-section');
     const resetBtn = document.getElementById('reset-btn');
     const generateBtn = document.getElementById('generate-btn');
-    
+
     // Tab controls
     const tabWorkout = document.getElementById('tab-workout');
     const tabDiet = document.getElementById('tab-diet');
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const age = document.getElementById('age').value;
         const weight = document.getElementById('weight').value;
         const height = document.getElementById('height').value;
@@ -39,20 +39,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const activity_level = document.getElementById('activity_level').value;
 
         generateBtn.classList.add('loading');
-        
+
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/recommend', {
+            const response = await fetch('https://fitness-diet-recommendation-system.onrender.com/api/recommend', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    age, weight, height, goal, diet_pref, gender, 
-                    workout_days, weekly_goal_kg, activity_level 
+                body: JSON.stringify({
+                    age, weight, height, goal, diet_pref, gender,
+                    workout_days, weekly_goal_kg, activity_level
                 })
             });
 
             if (!response.ok) throw new Error(`API returned status ${response.status}`);
             const data = await response.json();
-            
+
             if (data.status === 'success') {
                 // Populate Metrics
                 document.getElementById('bmi-display').textContent = data.metrics.bmi;
@@ -60,10 +60,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('calories-display').textContent = data.metrics.target_calories + " kcal";
                 document.getElementById('protein-display').textContent = data.metrics.target_protein + " g";
                 document.getElementById('calorie-breakdown').textContent = data.metrics.calorie_breakdown;
-                
+
                 document.getElementById('diet-type').textContent = data.diet_plan.type;
                 document.getElementById('diet-strategy').textContent = data.diet_plan.strategy;
-                
+
                 document.getElementById('workout-focus').textContent = data.workout_plan.focus;
                 document.getElementById('workout-frequency').textContent = data.workout_plan.frequency;
 
@@ -91,11 +91,11 @@ document.addEventListener('DOMContentLoaded', () => {
         workoutSchedule.innerHTML = '';
         const grid = document.createElement('div');
         grid.className = 'schedule-grid';
-        
+
         schedule.forEach((day, index) => {
             const card = document.createElement('div');
             card.className = 'schedule-day-card fade-in';
-            
+
             let tooltipHTML = '';
             if (day.details && day.details.length > 0) {
                 let itemsHTML = day.details.map(ex => `
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 `).join('');
                 tooltipHTML = `<div class="day-tooltip"><h4 class="tooltip-header">Routine</h4><div class="tooltip-scroll">${itemsHTML}</div></div>`;
             }
-            
+
             card.innerHTML = `
                 <div class="day-header">${day.day}</div>
                 <div class="day-body">
@@ -127,11 +127,11 @@ document.addEventListener('DOMContentLoaded', () => {
         dietSchedule.innerHTML = '';
         const grid = document.createElement('div');
         grid.className = 'schedule-grid';
-        
+
         schedule.forEach((day, index) => {
             const card = document.createElement('div');
             card.className = 'schedule-day-card diet-card fade-in';
-            
+
             let itemsHTML = day.meals.map(m => `
                 <div class="exercise-item meal-item">
                     <div class="ex-info">
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `).join('');
 
             const tooltipHTML = `<div class="day-tooltip"><h4 class="tooltip-header">Meal Plan</h4><div class="tooltip-scroll">${itemsHTML}</div></div>`;
-            
+
             card.innerHTML = `
                 <div class="day-header">${day.day}</div>
                 <div class="day-body">
